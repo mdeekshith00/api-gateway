@@ -1,65 +1,36 @@
 spring:
   cloud:
     gateway:
+      enabled: true
       routes:
         - id: user-service
-          uri: lb://user-service
+          uri: http://localhost:8081
           predicates:
             - Path=/users/**
-          filters:
-            - JwtAuthenticationFilter
         - id: hospital-service
           uri: lb://hospital-service
           predicates:
             - Path=/hospitals/**
-          filters:
-            - JwtAuthenticationFilter
         - id: donor-service
           uri: lb://donor-service
           predicates:
             - Path=/donors/**
-          filters:
-            - JwtAuthenticationFilter
         - id: camp-service
           uri: lb://camp-service
           predicates:
             - Path=/camps/**
-          filters:
-            - JwtAuthenticationFilter
+        - id: donation-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/donations/**
+        - id: blood-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/bloods/**
 
-
-#resilience4j:
-#						 circuitbreaker:
-#						    instances:
-#						      inventory:   # your service instance name
-#						        register-health-indicator: true
-
-#						        # Sliding window
-#						        sliding-window-type: COUNT_BASED   # or TIME_BASED
-#						        sliding-window-size: 10            # number of calls in the window
-#						        minimum-number-of-calls: 5         # before calculating failure rate
-#
-#						        # Thresholds
-#						        failure-rate-threshold: 50         # % failures before OPEN
-#						        slow-call-rate-threshold: 50       # % slow calls before OPEN
-#						        slow-call-duration-threshold: 2s   # what counts as "slow"
-#
-#						        # Open state settings
-#						        wait-duration-in-open-state: 10s   # time CB stays OPEN before HALF_OPEN
-#						        automatic-transition-from-open-to-half-open-enabled: true
-#						        permitted-number-of-calls-in-half-open-state: 3
-#
-#						        # Exceptions
-#						        record-exceptions:
-#						          - java.io.IOException
-#						          - java.util.concurrent.TimeoutException
-#						        ignore-exceptions:
-#						          - java.lang.IllegalArgumentException
-#						          - org.springframework.web.client.HttpClientErrorException$NotFound
-#
-#						        # Event buffer
-#						        event-consumer-buffer-size: 10
-#
-#						        # Misc
-#						        writable-stack-trace-enabled: true
-#						        allow-health-indicator-to-fail: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
