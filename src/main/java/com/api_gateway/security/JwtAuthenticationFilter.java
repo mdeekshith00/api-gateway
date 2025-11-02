@@ -20,7 +20,7 @@ public class JwtAuthenticationFilter implements GatewayFilter, Ordered {
 
     private final JwtUtil jwtUtil;
 
-    private static final List<String> OPEN_ENDPOINTS = List.of(
+    private static final List<String> OPEN_ENDPOINTS  = List.of(
             "/users/sign-up",
             "/users/login",
             "/actuator",
@@ -53,10 +53,12 @@ public class JwtAuthenticationFilter implements GatewayFilter, Ordered {
 
             ServerHttpRequest mutatedRequest = exchange.getRequest().mutate()
                     .header("X-User-Id", userId)
+                    .header("X-User-Roles", claims.get("roles", String.class))
                     .build();
 
             return chain.filter(exchange.mutate().request(mutatedRequest).build());
         } catch (Exception e) {
+            e.printStackTrace(); // ✅ for visibility in logs
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
