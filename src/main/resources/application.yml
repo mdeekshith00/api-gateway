@@ -1,36 +1,23 @@
 spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+
   cloud:
     gateway:
-      enabled: true
       routes:
         - id: user-service
-          uri: http://localhost:8081
+          uri: lb://user-service
           predicates:
-            - Path=/users/**
-        - id: hospital-service
-          uri: lb://hospital-service
-          predicates:
-            - Path=/hospitals/**
-        - id: donor-service
-          uri: lb://donor-service
-          predicates:
-            - Path=/donors/**
-        - id: camp-service
-          uri: lb://camp-service
-          predicates:
-            - Path=/camps/**
-        - id: donation-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/donations/**
-        - id: blood-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/bloods/**
-
+            - Path=/user/**
+            
 eureka:
   client:
-    serviceUrl:
+    service-url:
       defaultZone: http://localhost:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
