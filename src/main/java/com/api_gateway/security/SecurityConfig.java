@@ -16,15 +16,8 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(ex -> ex
-                        .pathMatchers(
-                                "/user/sign-up",
-                                "/user/sign-in",
-                                "/user/refresh-token",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-                        .anyExchange().authenticated())
+                        .anyExchange().permitAll()   // 🔥 let GlobalFilter + downstream handle auth
+                )
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .build();
