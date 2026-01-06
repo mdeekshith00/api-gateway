@@ -7,11 +7,42 @@ spring:
   cloud:
     gateway:
       routes:
+
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/user/**
-            
+
+        - id: donor-service
+          uri: lb://donor-service
+          predicates:
+            - Path=/donor/**
+
+        - id: donation-service
+          uri: lb://donation-service
+          predicates:
+            - Path=/donation/**
+
+        - id: blood-service
+          uri: lb://blood-service
+          predicates:
+            - Path=/blood/**
+
+        - id: camp-service
+          uri: lb://camp-service
+          predicates:
+            - Path=/camp/**
+
+        - id: hospital-service
+          uri: lb://hospital-service
+          predicates:
+            - Path=/hospital/**
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/notification/**
+
 eureka:
   client:
     service-url:
@@ -21,3 +52,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: localhost
+logging:
+  level:
+   org.springframework.security: DEBUG
+
